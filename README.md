@@ -4,15 +4,16 @@ Expense Tracker é uma aplicação web simples para controlar seus gastos. Ele p
 
 ## Funcionalidades
 
-- Adicionar novas despesas com descrição e valor.
+- Adicionar novas despesas com descrição, valor, total de parcelas e parcela atual.
 - Listar todas as despesas adicionadas.
 - Exibir o total das despesas.
+
 
 ## Configuração do Ambiente
 
 1. Clone o repositório para sua máquina local:
     ```sh
-    git clone https://github.com/gvezono/controle_gastos.git
+    git clone https://github.com/gvezono/expense_tracker.git
     ```
 
 2. Navegue até o diretório do projeto:
@@ -28,7 +29,9 @@ Expense Tracker é uma aplicação web simples para controlar seus gastos. Ele p
         id INT AUTO_INCREMENT PRIMARY KEY,
         description VARCHAR(255) NOT NULL,
         amount DECIMAL(10, 2) NOT NULL,
-        date DATE NOT NULL
+        date DATE NOT NULL,
+        total_parcelas INT DEFAULT 1,
+        parcela_atual INT DEFAULT 1
     );
     ```
 
@@ -56,4 +59,4 @@ Expense Tracker é uma aplicação web simples para controlar seus gastos. Ele p
 
 2. Adicione suas despesas usando o formulário na página principal.
 
-3. As despesas adicionadas serão listadas abaixo do formulário, juntamente com o total de despesas.
+3. Clique no botão "Show Expenses" para exibir a lista de despesas e o total de despesas.

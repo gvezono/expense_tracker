@@ -1,7 +1,7 @@
 <?php
 include 'db.php';
 
-$sql = "SELECT description, amount FROM gastos";
+$sql = "SELECT description, amount, date, total_parcelas, parcela_atual FROM gastos";
 $result = $conn->query($sql);
 
 $expenses = [];

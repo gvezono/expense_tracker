@@ -1,25 +1,32 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetchExpenses();
-
     document.getElementById('expense-form').addEventListener('submit', function(event) {
         event.preventDefault();
 
         const description = document.getElementById('description').value;
         const amount = parseFloat(document.getElementById('amount').value);
+        const totalParcelas = parseInt(document.getElementById('total_parcelas').value);
+        const parcelaAtual = parseInt(document.getElementById('parcela_atual').value);
 
-        if (description && !isNaN(amount) && amount > 0) {
-            addExpense(description, amount);
+        if (description && !isNaN(amount) && amount > 0 && totalParcelas >= 1 && parcelaAtual >= 1 && parcelaAtual <= totalParcelas) {
+            addExpense(description, amount, totalParcelas, parcelaAtual);
         } else {
-            alert('Please enter a valid description and amount.');
+            alert('Please enter valid values.');
+        }
+    });
+
+    document.getElementById('show-expenses-button').addEventListener('click', function() {
+        const expenseList = document.getElementById('expense-list');
+        expenseList.style.display = expenseList.style.display === 'none' ? 'block' : 'none';
+        if (expenseList.style.display === 'block') {
+            fetchExpenses();
         }
     });
 });
 
 function fetchExpenses() {
-    fetch('fetch_expenses.php')
+    fetch('src/fetch_expenses.php')
         .then(response => response.json())
         .then(data => {
-            console.log(data);  // Adicione esta linha para verificar os dados retornados
             const expenseList = document.getElementById('expense-list');
             const totalAmountElement = document.getElementById('total-amount');
 
@@ -30,7 +37,10 @@ function fetchExpenses() {
                 const amount = parseFloat(expense.amount);
                 if (!isNaN(amount)) {
                     const listItem = document.createElement('li');
-                    listItem.textContent = `${expense.description}: $${amount.toFixed(2)}`;
+                    listItem.innerHTML = `
+                        <div>${expense.date} - ${expense.description}</div>
+                        <div>R$${amount.toFixed(2)} (${expense.parcela_atual}/${expense.total_parcelas})</div>
+                    `;
                     expenseList.appendChild(listItem);
                     totalAmount += amount;
                 }
@@ -41,18 +51,18 @@ function fetchExpenses() {
         .catch(error => console.error('Error fetching expenses:', error));
 }
 
-function addExpense(description, amount) {
-    fetch('add_expense.php', {
+function addExpense(description, amount, totalParcelas, parcelaAtual) {
+    fetch('src/add_expense.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `description=${encodeURIComponent(description)}&amount=${encodeURIComponent(amount)}`
+        body: `description=${encodeURIComponent(description)}&amount=${encodeURIComponent(amount)}&total_parcelas=${encodeURIComponent(totalParcelas)}&parcela_atual=${encodeURIComponent(parcelaAtual)}`
     })
     .then(response => {
         if (response.ok) {
-            fetchExpenses();
             document.getElementById('expense-form').reset();
+            fetchExpenses();
         } else {
             alert('Error adding expense');
         }
