@@ -24,7 +24,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchExpenses() {
+<<<<<<< HEAD
     fetch('src/fetch_expenses.php')
+=======
+    fetch('/src/fetch_expenses.php')
+>>>>>>> 0268e9d (CheckPoint: ainda tem que digitar o /public)
         .then(response => response.json())
         .then(data => {
             const expenseList = document.getElementById('expense-list');
@@ -52,7 +56,11 @@ function fetchExpenses() {
 }
 
 function addExpense(description, amount, totalParcelas, parcelaAtual) {
+<<<<<<< HEAD
     fetch('src/add_expense.php', {
+=======
+    fetch('/src/add_expense.php', {
+>>>>>>> 0268e9d (CheckPoint: ainda tem que digitar o /public)
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
