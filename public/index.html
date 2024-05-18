@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Expense Tracker</h1>
-        <form id="expense-form" action="src/add_expense.php" method="POST">
+        <form id="expense-form" action="/src/add_expense.php" method="POST">
             <div class="form-control">
                 <label for="description">Description</label>
                 <input type="text" id="description" name="description" required>
@@ -32,6 +32,6 @@
         <ul id="expense-list" style="display: none;"></ul>
         <h2>Total: $<span id="total-amount">0.00</span></h2>
     </div>
-    <script src="public/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
