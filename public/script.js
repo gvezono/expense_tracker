@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('show-expenses-button').addEventListener('click', function() {
-        const expenseList = document.getElementById('expense-list');
-        expenseList.style.display = expenseList.style.display === 'none' ? 'block' : 'none';
-        if (expenseList.style.display === 'block') {
+        const expenseListContainer = document.getElementById('expense-list-container');
+        expenseListContainer.style.display = expenseListContainer.style.display === 'none' ? 'block' : 'none';
+        if (expenseListContainer.style.display === 'block') {
             fetchExpenses();
         }
     });
@@ -40,9 +40,11 @@ function fetchExpenses() {
             data.expenses.forEach(expense => {
                 const amount = parseFloat(expense.amount);
                 if (!isNaN(amount)) {
+                    const date = new Date(expense.date);
+                    const formattedDate = formatDate(date);
                     const listItem = document.createElement('li');
                     listItem.innerHTML = `
-                        <div>${expense.date} - ${expense.description}</div>
+                        <div>${formattedDate} - ${expense.description}</div>
                         <div>R$${amount.toFixed(2)} (${expense.parcela_atual}/${expense.total_parcelas})</div>
                     `;
                     expenseList.appendChild(listItem);
@@ -76,4 +78,10 @@ function addExpense(description, amount, totalParcelas, parcelaAtual) {
         }
     })
     .catch(error => console.error('Error adding expense:', error));
+}
+
+function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() retorna 0 para janeiro
+    return `${day}/${month}`;
 }
